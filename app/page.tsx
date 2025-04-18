@@ -3,7 +3,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 // Aceternity-inspired shimmer button
 const ShimmerButton: React.FC<{ children: React.ReactNode; onClick?: () => void }> = ({ children, onClick }) => {
