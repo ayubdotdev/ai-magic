@@ -112,13 +112,13 @@ export async function POST(request: NextRequest) {
           remainingCredits: remainingCredits
         });
         
-      } catch (attemptError: any) {
-        console.error(`Attempt ${attempt} failed:`, attemptError);
-        lastError = attemptError;
-        
-        // Continue to next iteration for retry
-        if (attempt < MAX_RETRIES) {
-          continue;
+      } catch (attemptError: unknown) {
+        if (attemptError instanceof Error) {
+          console.error(`Attempt ${attempt} failed:`, attemptError);
+          lastError = attemptError;
+        } else {
+          console.error(`Attempt ${attempt} failed with unknown error:`, attemptError);
+          lastError = new Error('Unknown error occurred');
         }
       }
     }

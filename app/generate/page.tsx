@@ -11,9 +11,7 @@ export default function GeneratePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPrompt, setCurrentPrompt] = useState<string | null>(null);
-  const [creditsUsed, setCreditsUsed] = useState<string | null>(null);
-  const [remainingCredits, setRemainingCredits] = useState<string | null>(null);
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -42,26 +40,12 @@ export default function GeneratePage() {
       if (!response.ok) {
         const errorData = await response.json();
         console.log(errorData.error);
-        // Even on error, update credit information if available
-        if (errorData.creditsUsed) {
-          setCreditsUsed(errorData.creditsUsed);
-        }
-        if (errorData.remainingCredits) {
-          setRemainingCredits(errorData.remainingCredits);
-        }
+        
         throw new Error(errorData.error || 'Failed to generate image');
       }
       
       const responseData = await response.json();
       console.log("data from frontend is", responseData);
-
-      // Update credits information
-      if (responseData.creditsUsed) {
-        setCreditsUsed(responseData.creditsUsed);
-      }
-      if (responseData.remainingCredits) {
-        setRemainingCredits(responseData.remainingCredits);
-      }
 
       if (responseData?.images && responseData.images.length > 0) {
         setGeneratedImage(`data:image/png;base64,${responseData.images[0].base64}`);
